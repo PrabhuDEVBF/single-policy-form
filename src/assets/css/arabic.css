@@ -1,0 +1,53 @@
+/* Arabic specific adjustments */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+
+.rtl-layout {
+  font-family: "Cairo", sans-serif;
+}
+
+.rtl-layout .me-3 {
+  margin-right: 0 !important;
+  margin-left: 1rem !important;
+}
+
+.rtl-layout .ms-3 {
+  margin-left: 0 !important;
+  margin-right: 1rem !important;
+}
+
+.rtl-layout .ms-auto {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.rtl-layout .pe-3 {
+  padding-right: 0 !important;
+  padding-left: 1rem !important;
+}
+
+.rtl-layout .ps-3 {
+  padding-left: 0 !important;
+  padding-right: 1rem !important;
+}
+
+.rtl-layout .text-end {
+  text-align: left !important;
+}
+
+.rtl-layout .text-start {
+  text-align: right !important;
+}
+.rtl-layout .langy {
+  left: 0;
+  right: auto;
+}
+
+.rtl-layout .ltr {
+  direction: ltr !important;
+}
+.rtl-layout .rtl {
+  direction: rtl !important;
+}
+.rtl-layout .form-check-label {
+  padding-right: 1.5em !important;
+}

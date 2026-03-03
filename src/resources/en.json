@@ -1,0 +1,69 @@
+{
+  "login": {
+    "title": "Login ",
+    "description": "Comprehensive marine insurance covering goods in transit by sea, air & land. Protection against loss, damage & theft during transportation.",
+    "username": "User Name",
+    "password": "Password",
+    "mobile": "Mobile Number",
+    "mobilePlaceholder": "Eg : 0512345678",
+    "mobileHint": "Mobile number must start with 05 and include 10 digits only.",
+    "captcha": "Captcha",
+    "captchaPlaceholder": "Enter Captcha",
+    "submit": "SUBMIT",
+    "copyright": "© Orient. All Rights Reserved 2026",
+    "contactUs": "Contact Us"
+  },
+  "otp": {
+    "title": "Verify Your OTP",
+    "description": "Enter the 4-digit verification code sent to your mobile number to complete secure verification. Mobile No :",
+    "timer": "Verification time end's in :",
+    "notReceived": "Didn't receive verification code ?",
+    "resend": "Resend",
+    "back": "BACK",
+    "verify": "VERIFY OTP"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "quotations": "Quotations",
+    "policies": "Policies",
+    "issuedCertificates": "Issued Certificates",
+    "singlePolicy": "Single Policy",
+    "singlePolicyDesc": "Issue Individual Policy",
+    "issuePolicyBtn": "Issue Policy",
+    "openCover": "Open Cover Policy",
+    "openCoverDesc": "Multiple Shipments, Easy Certification",
+    "issueCertBtn": "Issue Certificate"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "eservices": "EServices",
+    "approval": "Approval",
+    "reports": "Reports",
+    "masters": "Masters",
+    "logout": "Logout",
+    "quotationList": "Quotation List",
+    "policyList": "Policy List"
+  },
+  "policyLogin": {
+    "singleTitle": "Single Policy",
+    "openTitle": "Open Cover Policy",
+    "desc": "To access orient marine insurance",
+    "crNumber": "CR Number",
+    "crPlaceholder": "Eg : 7000001234",
+    "crHint": "The commercial registration number must be 10 digits.",
+    "mobile": "Mobile Number",
+    "mobilePlaceholder": "Eg : 0512345678",
+    "mobileHint": "Mobile number must start with 05 and include 10 digits only.",
+    "agreeTerms": "I agree to the",
+    "terms": "terms and conditions",
+    "ofProgram": "of program",
+    "submit": "Submit",
+    "copyright": "© Orient | All Rights Reserved 2026",
+    "fillFieldsError": "Please fill all fields",
+    "invalidMobileError": "Invalid mobile number. Must start with 05 and be 10 digits.",
+    "invalidCrError": "Invalid CR number. Must be 10 digits.",
+    "acceptTermsError": "You must agree to the terms and conditions",
+    "loginSuccess": "Login Success! Navigating...",
+    "loginError": "Invalid credentials."
+  }
+}

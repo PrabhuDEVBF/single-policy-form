@@ -1,0 +1,560 @@
+{
+  "products": [
+    {
+      "productCode": "PRD001",
+      "productName": "Marine Cargo-Single Transist",
+      "description": "Comprehensive and third-party motor insurance coverage.",
+      "status": "Active"
+    },
+    {
+      "productCode": "PRD002",
+      "productName": "Goods in Transist Annual",
+      "description": "Health insurance covering inpatient and outpatient benefits.",
+      "status": "Active"
+    }
+  ],
+  "Period": [
+    { "label": "Year", "value": "Y" },
+    { "label": "Months", "value": "M" },
+    { "label": "Weeks", "value": "W" },
+    { "label": "Days", "value": "D" }
+    
+  ],
+  "materialCategories": [
+    { "code": "MAT001", "name": "Batteries" },
+    { "code": "MAT002", "name": "Electronics" },
+    { "code": "MAT003", "name": "Furniture" },
+    { "code": "MAT004", "name": "Machinery" },
+    { "code": "MAT005", "name": "Clothing" },
+    { "code": "MAT006", "name": "Food Items" }
+  ],
+ "voyageTypes": [
+  { "code": "VOY001", "name": "Imports to KSA" },
+  { "code": "VOY002", "name": "Exports from KSA" },
+  { "code": "VOY003", "name": "Domestic" },
+  { "code": "VOY004", "name": "International" }
+],
+  "modeOfTransport": [
+    { "code": "MOD001", "name": "Sea_ICCA" },
+    { "code": "MOD002", "name": "Sea_ICC" },
+    { "code": "MOD003", "name": "Air_Freight" },
+    { "code": "MOD004", "name": "Road_Transport" }
+  ],
+  "iccCoverTypes": [
+    {
+      "MotransportCode": "MOD001",
+      "code": "ICCA",
+      "name": "Institute Cargo Clause A",
+      "description": "All Risks coverage — widest protection for accidental loss or damage unless specifically excluded."
+    },
+    {
+      "MotransportCode": "MOD001",
+      "code": "ICCB",
+      "name": "Institute Cargo Clause B",
+      "description": "Named Perils coverage including fire, explosion, vessel grounding, collision, earthquake, and similar risks."
+    },
+    {
+      "MotransportCode": "MOD001",
+      "code": "ICCC",
+      "name": "Institute Cargo Clause C",
+      "description": "Basic Named Perils — limited protection including fire, explosion, grounding, collision, and jettison."
+    },
+    {
+      "MotransportCode": "MOD001",
+      "code": "ICCD",
+      "name": "Institute Cargo Clause D",
+      "description": "Restricted coverage — minimal protection for low-risk or low-value cargo shipments."
+    },
+
+    {
+      "MotransportCode": "MOD002",
+      "code": "ICCA",
+      "name": "Institute Cargo Clause A",
+      "description": "All Risks coverage — widest protection for accidental loss or damage unless specifically excluded."
+    },
+    {
+      "MotransportCode": "MOD002",
+      "code": "ICCB",
+      "name": "Institute Cargo Clause B",
+      "description": "Named Perils coverage including fire, explosion, vessel grounding, collision, earthquake, and similar risks."
+    },
+    {
+      "MotransportCode": "MOD002",
+      "code": "ICCC",
+      "name": "Institute Cargo Clause C",
+      "description": "Basic Named Perils — limited protection including fire, explosion, grounding, collision, and jettison."
+    },
+    {
+      "MotransportCode": "MOD002",
+      "code": "ICCD",
+      "name": "Institute Cargo Clause D",
+      "description": "Restricted coverage — minimal protection for low-risk or low-value cargo shipments."
+    },
+
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCA",
+      "name": "Institute Cargo Clause A",
+      "description": "All Risks coverage — widest protection for accidental loss or damage unless specifically excluded."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCB",
+      "name": "Institute Cargo Clause B",
+      "description": "Named Perils coverage including fire, explosion, vessel grounding, collision, earthquake, and similar risks."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCC",
+      "name": "Institute Cargo Clause C",
+      "description": "Basic Named Perils — limited protection including fire, explosion, grounding, collision, and jettison."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCD",
+      "name": "Institute Cargo Clause D",
+      "description": "Restricted coverage — minimal protection for low-risk or low-value cargo shipments."
+    },
+
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCA",
+      "name": "Institute Cargo Clause A",
+      "description": "All Risks coverage — widest protection for accidental loss or damage unless specifically excluded."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCB",
+      "name": "Institute Cargo Clause B",
+      "description": "Named Perils coverage including fire, explosion, vessel grounding, collision, earthquake, and similar risks."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCC",
+      "name": "Institute Cargo Clause C",
+      "description": "Basic Named Perils — limited protection including fire, explosion, grounding, collision, and jettison."
+    },
+    {
+      "MotransportCode": "MOD003",
+      "code": "ICCD",
+      "name": "Institute Cargo Clause D",
+      "description": "Restricted coverage — minimal protection for low-risk or low-value cargo shipments."
+    }
+  ],
+  "rates": [
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY001",
+      "materialCategory": "MAT001",
+      "rateCover": "ICCA",
+      "marineRate": "0.05",
+      "warRate": "0.01",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.10",
+      "deductible": "300",
+      "minimumPremium": "500",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY001",
+      "materialCategory": "MAT002",
+      "rateCover": "ICCA",
+      "marineRate": "0.06",
+      "warRate": "0.01",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.11",
+      "deductible": "325",
+      "minimumPremium": "525",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY001",
+      "materialCategory": "MAT003",
+      "rateCover": "ICCA",
+      "marineRate": "0.07",
+      "warRate": "0.01",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.12",
+      "deductible": "350",
+      "minimumPremium": "550",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY001",
+      "materialCategory": "MAT004",
+      "rateCover": "ICCA",
+      "marineRate": "0.08",
+      "warRate": "0.02",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.13",
+      "deductible": "375",
+      "minimumPremium": "600",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY001",
+      "materialCategory": "MAT005",
+      "rateCover": "ICCB",
+      "marineRate": "0.09",
+      "warRate": "0.02",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.14",
+      "deductible": "400",
+      "minimumPremium": "650",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "ICCB",
+      "materialCategory": "MAT006",
+      "rateCover": "MT0006",
+      "marineRate": "0.10",
+      "warRate": "0.02",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.15",
+      "deductible": "425",
+      "minimumPremium": "700",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT001",
+      "rateCover": "ICCB",
+      "marineRate": "0.055",
+      "warRate": "0.011",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.10",
+      "deductible": "300",
+      "minimumPremium": "500",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT002",
+      "rateCover": "ICCB",
+      "marineRate": "0.065",
+      "warRate": "0.011",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.11",
+      "deductible": "325",
+      "minimumPremium": "525",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT003",
+      "rateCover": "MT0009",
+      "marineRate": "0.075",
+      "warRate": "0.011",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.02",
+      "otherRate": "0.12",
+      "deductible": "350",
+      "minimumPremium": "550",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT004",
+      "rateCover": "MT0010",
+      "marineRate": "0.085",
+      "warRate": "0.022",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.13",
+      "deductible": "375",
+      "minimumPremium": "600",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT005",
+      "rateCover": "MT0011",
+      "marineRate": "0.095",
+      "warRate": "0.022",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.14",
+      "deductible": "400",
+      "minimumPremium": "650",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY002",
+      "materialCategory": "MAT006",
+      "rateCover": "MT0012",
+      "marineRate": "0.105",
+      "warRate": "0.022",
+      "overAgeRate": "0.01",
+      "transshipRate": "0.03",
+      "otherRate": "0.15",
+      "deductible": "425",
+      "minimumPremium": "700",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT001",
+      "rateCover": "MT0013",
+      "marineRate": "0.045",
+      "warRate": "0.008",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.01",
+      "otherRate": "0.08",
+      "deductible": "250",
+      "minimumPremium": "400",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT002",
+      "rateCover": "MT0014",
+      "marineRate": "0.055",
+      "warRate": "0.008",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.01",
+      "otherRate": "0.09",
+      "deductible": "275",
+      "minimumPremium": "425",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT003",
+      "rateCover": "MT0015",
+      "marineRate": "0.065",
+      "warRate": "0.008",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.01",
+      "otherRate": "0.10",
+      "deductible": "300",
+      "minimumPremium": "450",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT004",
+      "rateCover": "MT0016",
+      "marineRate": "0.075",
+      "warRate": "0.015",
+      "overAgeRate": "0.005",
+      "transshipRate": "0.02",
+      "otherRate": "0.11",
+      "deductible": "325",
+      "minimumPremium": "500",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT005",
+      "rateCover": "MT0017",
+      "marineRate": "0.085",
+      "warRate": "0.015",
+      "overAgeRate": "0.005",
+      "transshipRate": "0.02",
+      "otherRate": "0.12",
+      "deductible": "350",
+      "minimumPremium": "550",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY003",
+      "materialCategory": "MAT006",
+      "rateCover": "MT0018",
+      "marineRate": "0.095",
+      "warRate": "0.015",
+      "overAgeRate": "0.005",
+      "transshipRate": "0.02",
+      "otherRate": "0.13",
+      "deductible": "375",
+      "minimumPremium": "600",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT001",
+      "rateCover": "MT0019",
+      "marineRate": "0.06",
+      "warRate": "0.012",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.025",
+      "otherRate": "0.11",
+      "deductible": "320",
+      "minimumPremium": "520",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT002",
+      "rateCover": "MT0020",
+      "marineRate": "0.07",
+      "warRate": "0.012",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.025",
+      "otherRate": "0.12",
+      "deductible": "345",
+      "minimumPremium": "545",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT003",
+      "rateCover": "MT0021",
+      "marineRate": "0.08",
+      "warRate": "0.012",
+      "overAgeRate": "0.00",
+      "transshipRate": "0.025",
+      "otherRate": "0.13",
+      "deductible": "370",
+      "minimumPremium": "570",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT004",
+      "rateCover": "MT0022",
+      "marineRate": "0.09",
+      "warRate": "0.025",
+      "overAgeRate": "0.015",
+      "transshipRate": "0.035",
+      "otherRate": "0.14",
+      "deductible": "395",
+      "minimumPremium": "620",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT005",
+      "rateCover": "MT0023",
+      "marineRate": "0.10",
+      "warRate": "0.025",
+      "overAgeRate": "0.015",
+      "transshipRate": "0.035",
+      "otherRate": "0.15",
+      "deductible": "420",
+      "minimumPremium": "670",
+      "remarks": "Auto-generated rate."
+    },
+    {
+      "modeOfTransport": "MOD001",
+      "voyageType": "VOY004",
+      "materialCategory": "MAT006",
+      "rateCover": "MT0024",
+      "marineRate": "0.11",
+      "warRate": "0.025",
+      "overAgeRate": "0.015",
+      "transshipRate": "0.035",
+      "otherRate": "0.16",
+      "deductible": "445",
+      "minimumPremium": "720",
+      "remarks": "Auto-generated rate."
+    }
+  ],
+  "customerdata": [
+    {
+      "customerId": "CUST00987",
+      "firstName": "Fahad",
+      "lastName": "Al Harbi",
+      "gender": "Male",
+      "dateOfBirth": "1988-11-12",
+      "maritalStatus": "Married",
+      "nationality": "Saudi",
+
+      "email": "fahad.alharbi@example.com",
+      "mobile": "+966-512345678",
+      "alternateMobile": "+966-501112233",
+      "whatsappNumber": "+966-512345678",
+
+      "addressLine1": "Villa 14, Al Yasmin District",
+      "addressLine2": "Near Al Thumama Road",
+      "city": "Riyadh",
+      "state": "Riyadh",
+      "pincode": "13326",
+      "country": "Saudi Arabia",
+
+      "documentType": "National ID",
+      "documentNumber": "1034567890",
+      "iqamaNumber": null,
+      "panNumber": null,
+
+      "employmentType": "Salaried",
+      "organizationName": "Saudi Telecom Company (STC)",
+      "annualIncome": 120000
+    }
+  ],
+  "loginResponses": [
+    {
+      "code": 1,
+      "message": "Success",
+      "data": {
+        "companyCode": "Employee",
+        "branchCode": "EM001",
+        "userName": "Agent",
+        "empCode": "E002",
+        "agentid": "Agent1",
+        "user": "Agent1",
+        "levelCode": "6",
+        "department": "",
+        "email": "jenish@ivoxpark.com",
+        "mobile": "0510442682",
+        "branch": "EM001",
+        "brokerName": "Orient",
+        "commission": "15.00",
+        "nationalID": "1333333333",
+        "token": null
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI..."
+    },
+    {
+      "code": 1,
+      "message": "Success",
+      "data": {
+        "companyCode": "Employee",
+        "branchCode": "EM001",
+        "userName": "underwritter",
+        "empCode": "E003",
+        "agentid": "UWAdmin",
+        "user": "UWAdmin",
+        "levelCode": "7",
+        "department": "",
+        "email": "abdullah.abdullah@orientinsurance.com.sa",
+        "mobile": "0510442682",
+        "branch": "EM001",
+        "brokerName": "Orient",
+        "commission": "15.00",
+        "nationalID": "2383785595",
+        "token": null
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI..."
+    }
+  ]
+}

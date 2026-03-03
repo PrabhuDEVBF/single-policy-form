@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.8" height="22" viewBox="0 0 19.8 22">
+  <g id="shield-svgrepo-com" transform="translate(-3 -2)">
+    <path id="Path_5" data-name="Path 5" d="M3,12.391c0,6.2,4.663,9.212,7.588,10.489a4.614,4.614,0,0,0,2.312.52V8L3,11.3Z" transform="translate(0 0.6)" fill="#005aab"/>
+    <path id="Path_6" data-name="Path 6" d="M14.312,22.88C17.237,21.6,21.9,18.592,21.9,12.391V11.3L12,8V23.4A4.614,4.614,0,0,0,14.312,22.88Z" transform="translate(0.9 0.6)" fill="#005aab" opacity="0.5"/>
+    <path id="Path_7" data-name="Path 7" d="M9.421,2.885l-.63.216C5.484,4.233,3.831,4.8,3.415,5.391S3,7.741,3,11.258V11.9l9.9-3.3V2A11.318,11.318,0,0,0,9.421,2.885Z" transform="translate(0)" fill="#005aab" opacity="0.5"/>
+    <path id="Path_8" data-name="Path 8" d="M16.109,3.1l-.63-.216A11.319,11.319,0,0,0,12,2V8.6l9.9,3.3v-.642c0-3.517,0-5.276-.415-5.868S19.416,4.233,16.109,3.1Z" transform="translate(0.9)" fill="#005aab"/>
+  </g>
+</svg>

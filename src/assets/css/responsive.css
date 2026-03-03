@@ -1,0 +1,23 @@
+@media (max-width: 996px) {
+  .bg-orient {
+    background-color: #003380;
+    height: 90px;
+  }
+  .ship-bg {
+    display: none;
+  }
+  .logobox {
+    padding: 15px 25px !important;
+  }
+  .curl {
+    height: 100% !important;
+  }
+  .lp-wmark {
+  }
+
+  .lp-curve {
+  }
+  .no-show-mob {
+    display: none;
+  }
+}

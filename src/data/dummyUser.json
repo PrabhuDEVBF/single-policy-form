@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "username": "agent",
+        "role": "Agent",
+        "name": "Ahmed Agent",
+        "mobile": "0512345678"
+    },
+    {
+        "id": 2,
+        "username": "underwriter",
+        "role": "Underwriter",
+        "name": "Mohammed Ajmal",
+        "mobile": "0587654321"
+    }
+]
