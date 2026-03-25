@@ -67,10 +67,10 @@ const ProgressBar = ({ Tabname }) => {
             alt="Ship"
             style={{
               position: "absolute",
-              top: "-30px",
+              top: "-34px",
               left: shipLeft,
               transform: "translateX(-50%)",
-              width: "50px",
+              width: "100px",
               transition: "left 0.4s ease",
               zIndex: 10,
             }}

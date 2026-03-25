@@ -27,7 +27,7 @@ const AdditionalFieldsPopup = ({
   ];
 
   return (
-<div className="modal fade show d-block modal-backdrop-blur">
+<div className="modal fade show d-block modal-backdrop-blur" style={{ zIndex: 2000 }}>
         <div className="modal-dialog modal-xl modal-dialog-centered">
         <div className="modal-content rounded-4 shadow-lg border-0">
 

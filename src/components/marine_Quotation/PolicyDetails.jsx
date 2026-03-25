@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState  } from "react";
 // import { FloatingSelect } from "../FloatingSelect";
 // import { FloatingDatePicker } from "../FloatingDatePicker";
 import { useLanguage } from "../../context/LanguageContext";
@@ -7,7 +7,11 @@ import { CustomDropDown } from "../../components/Common/CustomDropdown";
 import { CustomDatePicker } from "../../components/Common/CustomDatePicker";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { GetMasterDetails, GetRateDetails } from "../../../src/services/api";
+
+
 const PolicyDetail = ({
+  type,
   formData,
   setFormData,
   validationErrors = {},
@@ -15,8 +19,25 @@ const PolicyDetail = ({
     onAddAdditional,
 }) => {
   const { language, langData } = useLanguage();
+  const [products, setProducts] = useState([]);
+  const [productOpen, setProductOpen] = useState([]);
+  const [VoyageType, setvoyageDetails] = useState([]);
+  const [ModeOfTransport, setModeOfTransport] = useState([]);
+  const [MaterialCategory, setMaterialCategory] = useState([]);
+  const [RateCover, setRateCover] = useState([]);
 
-const handleChange = (field, value, label) => {
+  const [dropdownOptions, setDropdownOptions] = useState({
+    products: [],
+    productsOpen: [],
+    materialCategories: [],
+    voyageTypes: [],
+    modeOfTransport: [],
+    iccCoverTypes: [],
+    Period: [],
+  });
+
+
+  const handleChange = (field, value, label) => {
   setFormData((prev) => ({
     ...prev,
     [field]: value,
@@ -141,6 +162,34 @@ const PeriodOptions = [
     { value: "3", labeleng: "3" },
   ];
 
+  //masters
+  useEffect(() => {
+    const loadMasterData = async () => {
+      const res = await GetMasterDetails({});
+      setProducts(res?.productOpenCover || []);
+      setProductOpen(res?.productOpen || []);
+      setMaterialCategory(res?.materialCategory || []);
+      setModeOfTransport(res?.modeOfTransport || []);
+      setRateCover(res?.coverMaster || []);
+      setvoyageDetails(res?.voyageDetails || []);
+    };
+    loadMasterData();
+  }, []);
+  useEffect(() => {
+    setDropdownOptions({
+      products: products || [],
+      productsOpen: productOpen || [],
+      materialCategories: MaterialCategory || [],
+      voyageTypes: VoyageType || [],
+      modeOfTransport: ModeOfTransport || [],
+      iccCoverTypes: RateCover || [],
+     // Period: testjson.Period || [],
+    });
+  }, [products]);
+  // const filteredRateCovers = dropdownOptions.iccCoverTypes.filter(
+  //   (item) => item.fCoverName === formData.values.modeOfTransport?.value
+  // );
+
 return (
   <div className="motor-relative">
 
@@ -183,9 +232,9 @@ return (
       label="Product"
       value={formData.product}
       onChange={(val) => handleChange("product", val)}
-      options={ProductOptions.map((item) => ({
-        label: item.labeleng,
-        value: item.value,
+      options={products.map((item) => ({
+        label: item.ProductDescription,
+        value: item.ProductCode,
       }))}
     />
   </div>

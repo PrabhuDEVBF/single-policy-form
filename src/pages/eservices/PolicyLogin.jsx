@@ -8,6 +8,10 @@ import { useLoader } from "../../context/LoaderContext";
 import logo from "../../assets/img/logo.png";
 import watermarkBg from "../../assets/img/login-policy-watermark.png";
 import curveBg from "../../assets/img/login-policy-curv.png";
+import PolicyDetail from "../../components/marine_Quotation/PolicyDetails";
+import { GetExistCustomer } from "../../services/api";
+import { GetWathiq } from "../../services/api";
+
 
 const PolicyLogin = () => {
   const { type } = useParams(); // 'single' or 'open'
@@ -31,8 +35,13 @@ const PolicyLogin = () => {
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  const handleSubmit = (e) => {
+
+
+
+  //SH
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const { crNumber, mobile, agree } = form;
 
     if (!crNumber || !mobile) {
@@ -50,6 +59,7 @@ const PolicyLogin = () => {
       return;
     }
 
+
     if (!agree) {
       toast.error(t.acceptTermsError);
       return;
@@ -57,15 +67,85 @@ const PolicyLogin = () => {
 
     setIsLoading(true);
 
-    // Mock Navigation Logic
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success(t.loginSuccess);
-      // Navigate somewhere as a mock for now
-      navigate("/MaineQuotation")
-    }, 1000);
-  };
+    const payload = {
+      policyHolderID: crNumber,
+      mobileNo: mobile,
+      ipAddress: "",
+      ipDetails: "",
+      createdby: "portal",
+      requestType: "POLICY_LOGIN"
+    };
 
+    let result = null;
+
+    //  LOGIN TRY
+    try {
+      result = await GetExistCustomer(payload);
+      console.log("RESULT:", result);
+    } catch (error) {
+      console.log("Login API failed:", error);
+    }
+
+    // Existing customer
+    if (result && result.code == 1) {
+      const customer = result.data.customerDetailsResponse;
+
+
+
+      sessionStorage.setItem("customerData", JSON.stringify(customer));
+
+      setIsLoading(false);
+      navigate(`/MarineQuotation/${type}`);
+      return;
+    }
+
+    // WATHIQ FALLBACK
+    const wathiqPayload = {
+      clientID: crNumber,
+      ipAddress: "",
+      ipDetails: "",
+      createdby: "portal",
+      requestType: "PORTAL"
+    };
+
+    try {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), 3000)
+      );
+
+      const wathiqRes = await Promise.race([
+        GetWathiq(wathiqPayload),
+        timeoutPromise
+      ]);
+
+      console.log("Wathiq:", wathiqRes);
+
+      if (wathiqRes && wathiqRes.code == 1) {
+        const customer = {
+          policyHolderID: crNumber,
+          fullName: wathiqRes.data?.fullName || "New Customer",
+          mobileNo: mobile
+        };
+
+        sessionStorage.setItem("customerData", JSON.stringify(customer));
+
+        setIsLoading(false);
+        navigate(`/MarineQuotation/${type}`);
+        return;
+      }
+
+      // Invalid CR
+      setIsLoading(false);
+      toast.error("Invalid Credentials");
+
+    } catch (err) {
+      // API error
+      setIsLoading(false);
+      console.error("Wathiq error:", err);
+      toast.error("Invalid Credentials");
+    }
+  };
+  // // // 
   return (
     <div className="container-fluid p-0 vh-100 overflow-hidden ltr bg-orient position-relative">
       {/* Background Images */}
@@ -74,7 +154,7 @@ const PolicyLogin = () => {
           type="button"
           className="d-none btn btn-light shadow-sm rounded-circle d-flex align-items-center justify-content-center bg-white border-0"
           style={{ width: "40px", height: "40px" }}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate(`/MarineQuotation/${type}`)}
           title={lang === "ar" ? "الصفحة الرئيسية" : "Home"}
         >
           <i className="fa-solid fa-house text-orient"></i>
@@ -210,6 +290,7 @@ const PolicyLogin = () => {
         </div>
       </div>
     </div>
+
   );
 };
 

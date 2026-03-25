@@ -1,107 +1,184 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { CustomDropDown } from "../../components/Common/CustomDropdown";
 import { FaTrashAlt } from "react-icons/fa";
-import testData from "../../../src/data/Test.json";
+import { GetMasterDetails, GetRateDetails } from "../../../src/services/api";
+import { toast } from "react-toastify";
 
 const RateDetails = ({ rateList, setRateList }) => {
 
+  const [products, setProducts] = useState([]);
+  const [productOpen, setProductOpen] = useState([]);
+  const [VoyageType, setvoyageDetails] = useState([]);
+  const [ModeOfTransport, setModeOfTransport] = useState([]);
+  const [MaterialCategory, setMaterialCategory] = useState([]);
+  const [RateCover, setRateCover] = useState([]);
+
+    const [dropdownOptions, setDropdownOptions] = useState({
+    products: [],
+    productsOpen: [],
+    materialCategories: [],
+    voyageTypes: [],
+    modeOfTransport: [],
+    iccCoverTypes: [],
+    Period: [],
+  });
   const [selected, setSelected] = useState({
     modeOfTransport: null,
     rateCover: null,
     voyageType: null,
     materialCategory: null,
   });
+  //masters
+  useEffect(() => {
+    const loadMasterData = async () => {
+      const res = await GetMasterDetails({});
+      setProducts(res?.product || []);
+      setProductOpen(res?.productOpen || []);
+      setMaterialCategory(res?.materialCategory || []);
+      setModeOfTransport(res?.modeOfTransport || []);
+      setRateCover(res?.coverMaster || []);
+      setvoyageDetails(res?.voyageDetails || []);
+    };
+    loadMasterData();
+  }, []);
+  useEffect(() => {
+    setDropdownOptions({
+      products: products || [],
+      productsOpen: productOpen || [],
+      materialCategories: MaterialCategory || [],
+      voyageTypes: VoyageType || [],
+      modeOfTransport: ModeOfTransport || [],
+      iccCoverTypes: RateCover || [],
+    });
+  }, [MaterialCategory]);
 
-  const {
-    modeOfTransport,
-    voyageTypes,
-    materialCategories,
-    iccCoverTypes,
-    rates,
-  } = testData;
+
+
+
+
+
+
 
   // Filter ICC based on Mode
-  const filteredICC = useMemo(() => {
-    if (!selected.modeOfTransport?.value) return [];
+// const filteredICC = useMemo(() => {
 
-    return iccCoverTypes.filter(
-      (i) => i.MotransportCode === selected.modeOfTransport.value
-    );
-  }, [selected.modeOfTransport, iccCoverTypes]);
+//   if(!selected.modeOfTransport?.value) return [];
 
-  const handleChange = (field, value) => {
-    setSelected((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+//   return RateCover.filter(
+//     i => i.modeOfTransport === selected.modeOfTransport.value
+//   );
 
-  const getModeLabel = (code) =>
-    modeOfTransport.find((m) => m.code === code)?.name || "-";
+// },[selected.modeOfTransport, RateCover]);
 
-  const getMaterialLabel = (code) =>
-    materialCategories.find((m) => m.code === code)?.name || "-";
+const filteredICC = RateCover;
 
-  // AUTO ADD
-  useEffect(() => {
+const handleChange = (field, value) => {
+  // update dropdown UI state
+  setSelected((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+};
+const resetDropdowns = () => {
+  setSelected({
+    modeOfTransport: null,
+    rateCover: null,
+    voyageType: null,
+    materialCategory: null,
+  });
+};
+
+useEffect(() => {
+
+  const loadRates = async () => {
+
+    const payload = {
+      modeoftransport: selected.modeOfTransport?.value,
+      ratecover: selected.rateCover?.value,
+      voyagrType: selected.voyageType?.value,
+      materialCategory: selected.materialCategory?.value
+    };
+
     if (
-      !selected.modeOfTransport?.value ||
-      !selected.rateCover?.value ||
-      !selected.voyageType?.value ||
-      !selected.materialCategory?.value
-    ) {
-      return;
+      !payload.modeoftransport ||
+      !payload.ratecover ||
+      !payload.voyagrType ||
+      !payload.materialCategory
+    ) return;
+
+    try {
+
+      const res = await GetRateDetails(payload);
+      const rateData = res?.data?.result;
+
+      if (!rateData) {
+        toast.error("No rate details found for this combination");
+        resetDropdowns();
+        return;
+      }
+const materialName = getMaterialLabel(selected.materialCategory.value);
+      const newRate = {
+        id: Date.now(),
+        ...rateData,
+
+        modeOfTransport: selected.modeOfTransport.value,
+        materialCategory: selected.materialCategory.value,
+        voyageType: selected.voyageType.value,
+        rateCover: selected.rateCover.value,
+
+  materialName: materialName
+  ,        modeName: selected.modeOfTransport.label,
+
+        isVerified: false
+        
+      };
+
+      setRateList(prev => {
+
+        const exists = prev.some(
+          r =>
+            r.modeOfTransport === newRate.modeOfTransport &&
+            r.voyageType === newRate.voyageType &&
+            r.materialCategory === newRate.materialCategory &&
+            r.rateCover === newRate.rateCover
+        );
+
+        if (exists) return prev;
+
+        return [...prev, newRate];
+
+      });
+
+      resetDropdowns();
+
+    } catch (err) {
+
+      if (err?.response?.data?.statusCode === 404) {
+        toast.error("No rate details found for this combination");
+      } else {
+        toast.error("Something went wrong while fetching rate");
+      }
+
+      resetDropdowns();
     }
 
-    const matched = rates.find(
-      (r) =>
-        r.modeOfTransport === selected.modeOfTransport.value &&
-        r.voyageType === selected.voyageType.value &&
-        r.materialCategory === selected.materialCategory.value &&
-        r.rateCover === selected.rateCover.value
-    );
+  };
 
-    if (!matched) return;
+  loadRates();
 
-    setRateList((prev) => {
-      const exists = prev.some(
-        (r) =>
-          r.modeOfTransport === matched.modeOfTransport &&
-          r.voyageType === matched.voyageType &&
-          r.materialCategory === matched.materialCategory &&
-          r.rateCover === matched.rateCover
-      );
+}, [
+  selected.modeOfTransport,
+  selected.rateCover,
+  selected.voyageType,
+  selected.materialCategory
+]);
 
-      if (exists) return prev;
-return [
-  ...prev,
-  {
-    id: Date.now(),
-    ...matched,
-    materialName: getMaterialLabel(matched.materialCategory),
-    modeName: getModeLabel(matched.modeOfTransport),
-    isVerified: false,
-  },
-  
-];
-    });
+const getModeLabel = (code) =>
+  ModeOfTransport.find((m) => m.ModeOfTransportCode === code)?.ModeOfTransport_Type || "-";
 
-    // Reset dependent dropdowns
-    setSelected((prev) => ({
-      ...prev,
-      rateCover: null,
-      voyageType: null,
-      materialCategory: null,
-    }));
+const getMaterialLabel = (code) =>
+  MaterialCategory.find((m) => m.fMatCatCode === code)?.fMatCatDesc || "-";
 
-  }, [
-    selected.modeOfTransport,
-    selected.rateCover,
-    selected.voyageType,
-    selected.materialCategory,
-    rates,
-    setRateList
-  ]);
 
   const removeRate = (id) => {
     setRateList((prev) => prev.filter((r) => r.id !== id));
@@ -143,10 +220,10 @@ return [
               fullclassName="mb-3"
               value={selected.modeOfTransport}
               onChange={(v) => handleChange("modeOfTransport", v)}
-              options={modeOfTransport.map((i) => ({
-                label: i.name,
-                value: i.code,
-              }))}
+options={ModeOfTransport.map(i => ({
+  label: i.ModeOfTransport_Type,
+  value: i.ModeOfTransportCode
+}))}
             />
           </div>
 
@@ -157,8 +234,8 @@ return [
               value={selected.rateCover}
               onChange={(v) => handleChange("rateCover", v)}
               options={filteredICC.map((i) => ({
-                label: i.name,
-                value: i.code,
+                label: i.fCoverName,
+                value: i.fCoverCode,
               }))}
               isDisabled={!selected.modeOfTransport}
             />
@@ -170,10 +247,10 @@ return [
               label="Voyage Type"
               value={selected.voyageType}
               onChange={(v) => handleChange("voyageType", v)}
-              options={voyageTypes.map((i) => ({
-                label: i.name,
-                value: i.code,
-              }))}
+options={VoyageType.map(i => ({
+  label: i.Vtype,
+  value: i.Vcode
+}))}
             />
           </div>
 
@@ -183,10 +260,10 @@ return [
               label="Material Category"
               value={selected.materialCategory}
               onChange={(v) => handleChange("materialCategory", v)}
-              options={materialCategories.map((i) => ({
-                label: i.name,
-                value: i.code,
-              }))}
+options={MaterialCategory.map(i => ({
+  label: i.fMatCatDesc,
+  value: i.fMatCatCode
+}))}
             />
           </div>
 
@@ -338,82 +415,191 @@ return [
     .responsive{
 overflow-x: hidden;
     }
+.rate-card{
+background:white;
+border-radius:14px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+transition:0.2s;
+}
+
+.rate-card:hover{
+transform:translateY(-3px);
+}
+
+.rate-row{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+margin-bottom:4px;
+}
+
+.rate-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:6px;
+margin-top:6px;
+}
+.rate-box{
+display:flex;
+flex-direction:column;
+align-items:center;
+background:#f8fafc;
+border-radius:10px;
+padding:8px;
+font-size:12px;
+border:1px solid #edf0f3;
+}
+
+.rate-box small{
+color:#6c757d;
+font-size:11px;
+margin-bottom:3px;
+}
+
+/* Rate pills */
+
+.rate-pill{
+padding:3px 10px;
+border-radius:20px;
+font-weight:600;
+font-size:13px;
+}
+
+/* Marine */
+
+.rate-pill.red{
+background:#ffe5e5;
+color:#d92d20;
+}
+
+/* War */
+
+.rate-pill.gray{
+background:#eef1f5;
+color:#344054;
+}
+
+/* OverAge */
+
+.rate-pill.blue{
+background:#e7f1ff;
+color:#2f2a2a;
+}
+
+/* Min premium */
+
+.rate-pill.dark{
+background:#e8eaed;
+color:#1d2939;
+}
 `}
 </style>
+<div className="row g-3 mt-3">
 
-<div className="mt-4">
-  <div className="table-responsive">
-    <table className="table align-middle text-center mb-0 custom-rate-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Mode Of Transport</th>
-          <th>Rate Cover</th>
-          <th>Voyage Type</th>
-          <th>Material Category</th>
-          <th>Marine Rate</th>
-          <th>War Rate</th>
-          <th>OverAge Rate</th>
-          <th>Tranship Rate</th>
-          <th>Deductible</th>
-          <th>Min Premium</th>
-          <th>Remove</th>
-          <th>Verify</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {rateList.length === 0 && (
-          <tr>
-            <td colSpan={13} className="py-4 text-muted">
-              No marine rates added yet.
-            </td>
-          </tr>
-        )}
-
-        {rateList.map((row, index) => (
-          <tr key={row.id}>
-            <td>{String(index + 1).padStart(2, "0")}</td>
-            <td>{getModeLabel(row.modeOfTransport)}</td>
-            <td>{row.rateCover}</td>
-            <td>
-              {voyageTypes.find(v => v.code === row.voyageType)?.name || "-"}
-            </td>
-            <td>{getMaterialLabel(row.materialCategory)}</td>
-
-            <td><span className="rate-pill red">{row.marineRate}</span></td>
-            <td><span className="rate-pill gray">{row.warRate}</span></td>
-            <td><span className="rate-pill blue">{row.overAgeRate}</span></td>
-            <td><span className="rate-pill gray">{row.transshipRate}</span></td>
-            <td><span className="rate-pill blue">{row.deductible}</span></td>
-            <td><span className="rate-pill dark">{row.minimumPremium}</span></td>
-
-            <td>
-              <button
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => removeRate(row.id)}
-              >
-                <FaTrashAlt size={14} />
-              </button>
-            </td>
-
-            <td>
-              {row.isVerified ? (
-                <span className="badge bg-success px-3">✓ Verified</span>
-              ) : (
-                <button
-                  className="btn btn-sm btn-outline-primary"
-                  onClick={() => verifyRate(row.id)}
-                >
-                  Verify
-                </button>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+{rateList.length === 0 && (
+  <div className="text-center text-muted py-4">
+    No marine rates added yet.
   </div>
+)}
+
+{rateList.map((row, index) => (
+
+<div className="col-md-6 col-lg-4" key={row.id}>
+
+<div className="rate-card p-3">
+
+{/* Header */}
+<div className="d-flex justify-content-between align-items-center mb-2">
+
+<span className="badge bg-light text-dark">
+#{String(index + 1).padStart(2, "0")}
+</span>
+
+<div className="d-flex gap-2">
+
+<button
+className="btn btn-sm btn-outline-danger"
+onClick={() => removeRate(row.id)}
+>
+<FaTrashAlt size={13}/>
+</button>
+
+{row.isVerified ? (
+<span className="badge bg-success">Verified</span>
+) : (
+<button
+className="btn btn-sm btn-outline-primary"
+onClick={() => verifyRate(row.id)}
+>
+Verify
+</button>
+)}
+
+</div>
+
+</div>
+
+{/* Body */}
+
+<div className="rate-row">
+<span>Transport</span>
+<strong>{getModeLabel(row.modeOfTransport)}</strong>
+</div>
+
+<div className="rate-row">
+<span>Material</span>
+<strong>{getMaterialLabel(row.materialCategory)}</strong>
+</div>
+
+<div className="rate-row">
+<span>Voyage</span>
+<strong>
+{VoyageType.find(v => v.Vcode === row.voyageType)?.Vtype}
+</strong>
+</div>
+
+<hr/>
+
+<div className="rate-grid">
+
+<div className="rate-box">
+<small>Marine Rate</small>
+<span className="rate-pill blue">{row.marineRate}</span>
+</div>
+
+<div className="rate-box">
+<small>War Rate</small>
+<span className="rate-pill blue">{row.warRate}</span>
+</div>
+
+<div className="rate-box">
+<small>OverAge Rate</small>
+<span className="rate-pill blue">{row.overAgeRate}</span>
+</div>
+
+<div className="rate-box">
+<small>Tranship Rate</small>
+<span className="rate-pill blue">{row.transhipRate}</span>
+</div>
+
+<div className="rate-box">
+<small>Deductible</small>
+<span className="rate-pill blue">{row.deductable || 0.00}</span>
+</div>
+
+<div className="rate-box">
+<small>Min Premium</small>
+<span className="rate-pill blue">{row.minimumPremium || 0.00}</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+))}
+
 </div>
           </div>
         </div>

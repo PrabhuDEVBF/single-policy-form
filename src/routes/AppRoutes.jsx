@@ -13,10 +13,11 @@ const Reports = lazy(() => import("../pages/reports/Reports"));
 const RateMaster = lazy(() => import("../pages/masters/RateMaster"));
 const PolicyLogin = lazy(() => import("../pages/eservices/PolicyLogin"));
 const MarineInsurence = lazy(() => import("../pages/marine-insurence/MarineInsurance"));
+const IssueCertificate = lazy(() => import("../components/marine_Quotation/IssueCertificate"))
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/marine">
       <Suspense fallback={<Loader />}>
         <Routes>
           {/* Public Routes */}
@@ -36,13 +37,15 @@ const AppRoutes = () => {
               element={<PolicyLogin />}
             />
 
-                        <Route
-              path="/MaineQuotation"
+            <Route
+              path="/MarineQuotation/:type"
               element={<MarineInsurence />}
             />
           </Route>
-          
-
+          <Route
+            path="/policy-details/:policyNo"
+            element={<IssueCertificate />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

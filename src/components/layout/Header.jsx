@@ -13,8 +13,8 @@ const Header = () => {
 
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  const isAllowed = (allowedRoles) => allowedRoles.includes(role);
-
+  // const isAllowed = (allowedRoles) => allowedRoles.includes(role);
+const isAllowed = () => true;
   const handleLogout = () => {
     sessionStorage.removeItem("userRole");
     navigate("/login");

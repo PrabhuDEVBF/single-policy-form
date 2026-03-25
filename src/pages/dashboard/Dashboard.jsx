@@ -9,9 +9,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { lang, t: translations } = useLanguage();
   const t = translations.dashboard;
-  const role = sessionStorage.getItem("userRole"); // 'Agent' or 'Underwriter'
+  const role = sessionStorage.getItem("agentId");
 
-  const isUnderwriter = role === "Underwriter";
+  const isUnderwriter = role === "UWAdmin";
+  const isAgent = role === "Agent1";
+
+  const showOpenCover = isUnderwriter || isAgent;
 
   return (
     <div className="d-flex flex-column vh-100 bg-light">
@@ -83,7 +86,7 @@ const Dashboard = () => {
                 </h3>
               </div>
 
-              {/* Issued Certificates Card (Underwriter Only) */}
+              {/* Issued Certificates Card (Underwriter and agent) */}
               {isUnderwriter && (
                 <div className="d-flex align-items-center justify-content-between p-3 rounded bg-card-gray">
                   <div className="d-flex align-items-center gap-3">
@@ -138,22 +141,26 @@ const Dashboard = () => {
               </div>
 
               {/* Open Cover Policy (Underwriter Only) */}
-              {isUnderwriter && (
+              {showOpenCover && (
                 <div className="col-12 col-md-6">
                   <div className="bg-white rounded-3 shadow-sm p-4 d-flex justify-content-between align-items-center position-relative overflow-hidden h-100 min-vh-25">
                     <div className="z-2">
-                      <h5 className="text-dark mb-1">{t.openCover}</h5>
+                      <h5 className="text-dark mb-1">{"Open Cover Certificates"}</h5>
                       <p className="text-muted small mb-4">{t.openCoverDesc}</p>
                       <div className="d-flex gap-2">
-                        <button
+                        {/* <button
+                        disabled
                           onClick={() =>
                             navigate("/eservices/policy-login/open")
                           }
                           className="btn btn-sm btn-primary py-2 px-4 rounded-pill shadow-sm bg-light-indigo text-orient-blue border-0"
                         >
                           {t.issuePolicyBtn}
-                        </button>
-                        <button className="btn btn-sm btn-info py-2 px-4 rounded-pill shadow-sm bg-light-teal text-teal border-0">
+                        </button> */}
+                        <button
+                          className="btn btn-sm btn-info py-2 px-4 rounded-pill shadow-sm bg-light-teal text-teal border-0"
+                          onClick={() => navigate("/eservices/policies")}
+                        >
                           {t.issueCertBtn}
                         </button>
                       </div>

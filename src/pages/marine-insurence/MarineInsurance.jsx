@@ -7,12 +7,15 @@ import RiskDetail from "../../components/marine_Quotation/RiskDetails";
 import CustomerInfoCard from "../../components/common/CustomerInfoCard";
 import VesselVoyageDetail from "../../components/marine_Quotation/VesselVoyageDetails";
 import PremiumPopup from "../../components/marine_Quotation/PremiumPopup";
-import testData from "../../../src/data/Test.json";
 import AdditionalFieldsPopup from "../../components/common/AdditionalFieldsPopup"
 import { toast } from "react-toastify";
 import QuotationSummary from "../../components/marine_Quotation/QuotationSummary";
+import PolicySummary from "../../components/marine_Policy/PolicySummary";
+import { SavePolicy } from "../../services/api"
 import Swal from "sweetalert2";
-
+import { useParams } from "react-router-dom";
+import { buildMarineQuotationPayload } from "../../utils/buildMarineQuotationPayload";
+import { SaveQuotation } from "../../services/api"
 const Marineinsurence = () => {
   const [isloading] = useState(false);
   const [showPremium, setShowPremium] = useState(false);
@@ -20,20 +23,37 @@ const Marineinsurence = () => {
   const [step, setStep] = useState(1);
   const [showAdditional, setShowAdditional] = useState(false);
   const [additionalTab, setAdditionalTab] = useState("");
-
-  //  Convert material code → name here (parent level)
-  const { materialCategories } = testData;
-
-  const getMaterialLabel = (code) =>
-    materialCategories.find((m) => m.code === code)?.name || code;
+  const [calculatedRisks, setCalculatedRisks] = useState([]);
+  const [policyData, setPolicyData] = useState(null);
+  const { type } = useParams();
 
   const verifiedRisks = rateList
     .filter((r) => r.isVerified)
     .map((r) => ({
       ...r,
-      materialName: getMaterialLabel(r.materialCategory),
+      modeOfTransportcode: r.modeOfTransport,
+      rateCovercode: r.rateCover,
+      materialCategorycode: r.materialCategory,
+      voyageTypecode: r.voyageType,
+      voyageTypelabel: r.voyageType
     }));
 
+  // SH 
+  // const handleRisksUpdate = (updatedRisks) => {
+  //   setCalculatedRisks(updatedRisks);
+  // };
+
+  const handleRisksUpdate = (updatedRisks) => {
+    setCalculatedRisks(updatedRisks);
+
+
+    setRateList((prev) =>
+      prev.filter((r) => updatedRisks.some((u) => u.id === r.id))
+    );
+  };
+
+  // // //// //
+  const [quotationData, setQuotationData] = useState(null);
   const [formData, setFormData] = useState({
     product: null,
     issueDate: "",
@@ -139,7 +159,7 @@ const Marineinsurence = () => {
 
     Currency: null,
     ExchangeRate: "",
-    IncoTermDesc: null,
+    IncoTermDesc: "",
     IncoTermRate: "",
 
     minimumDepositAmount: "",
@@ -235,25 +255,115 @@ const Marineinsurence = () => {
 
     return true;
   };
+  // const handleSubmitQuotation = async () => {
+
+  //   // Validate Step 1 mandatory fields again
+  //   if (!validateStepOne()) return;
+
+  //   // You can also validate Step 2 fields here if needed
+
+  //   // Simulate API save delay
+  //   await Swal.fire({
+  //     title: "Quotation Saved Successfully!",
+  //     text: "Your marine quotation has been saved.",
+  //     icon: "success",
+  //     confirmButtonColor: "#3085d6",
+  //     confirmButtonText: "View Quotation"
+  //   });
+
+  //   // Redirect to Modern Quotation page
+  //   setStep(4);
+  // };
   const handleSubmitQuotation = async () => {
 
-    // Validate Step 1 mandatory fields again
     if (!validateStepOne()) return;
 
-    // You can also validate Step 2 fields here if needed
+    try {
 
-    // Simulate API save delay
+      const payload = buildMarineQuotationPayload(formData, calculatedRisks);
+
+
+      const res = await SaveQuotation(payload);
+      const result = res?.data?.result;
+      setQuotationData(result);
+
+      await Swal.fire({
+        title: "Success!",
+        text: "Quotation submitted successfully.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+      });
+
+      setStep(4);
+
+    } catch (err) {
+
+      Swal.fire({
+        title: "Quotation Failed!",
+        text: err.response?.data?.message || "Something went wrong.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+
+    }
+
+  };
+const handleIssuePolicy = async () => {
+  try {
+    const payload = {
+      quotationNo: quotationData?.policyId
+    };
+
+    const res = await SavePolicy(payload);
+console.log("policy response",res)
+    const result = res?.data?.result || res?.data;
+
+    setPolicyData(result[0]);
+
+    //  Success alert
     await Swal.fire({
-      title: "Quotation Saved Successfully!",
-      text: "Your marine quotation has been saved.",
       icon: "success",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "View Quotation"
+      title: "Policy Issued Successfully",
+      text: `Policy No: ${result[0]?.policyNo}`,
+      confirmButtonColor: "#3085d6"
     });
 
-    // Redirect to Modern Quotation page
-    setStep(4);
-  };
+    setStep(5);
+
+  } catch (err) {
+
+    //  Error alert
+    Swal.fire({
+      icon: "error",
+      title: "Policy Generation Failed",
+      text: "Something went wrong. Please try again.",
+      confirmButtonColor: "#d33"
+    });
+
+    console.error(err);
+  }
+};
+
+  // const handleIssuePolicy = async () => {
+
+  //   try {
+  //     const payload = {
+  //       quotationNo: quotationData?.policyId
+  //     };
+
+  //     const res = await SavePolicy(payload);
+
+  //     const result = res?.data?.result || res?.data;
+
+  //     setPolicyData(result[0]);
+
+  //     setStep(5);
+
+  //   } catch (err) {
+  //     toast.error("Policy generation failed");
+  //     console.error(err);
+  //   }
+  // };
   return (
     <>
       <Header />
@@ -264,15 +374,26 @@ const Marineinsurence = () => {
         {/* Progress Bar */}
         <div className="flex-shrink-0">
           <ProgressBar
+            // Tabname={
+            //   step === 1
+            //     ? "BasicInfo"
+            //     : step === 2
+            //       ? "BasicInfo"
+            //       : step === 3
+            //         ? "BasicInfo"
+            //         : step === 4
+            //           ? "Quotation"
+            //           : "BasicInfo"
+            // }
             Tabname={
               step === 1
                 ? "BasicInfo"
                 : step === 2
                   ? "BasicInfo"
-                  : step === 3
-                    ? "BasicInfo"
-                    : step === 4
-                      ? "Quotation"
+                  : step === 4
+                    ? "Quotation"
+                    : step === 5
+                      ? "PolicySummary"
                       : "BasicInfo"
             }
           />
@@ -293,6 +414,7 @@ const Marineinsurence = () => {
               >
                 <CustomerInfoCard formData={formData} />
               </div>
+
             </div>
 
             {/* RIGHT CONTENT */}
@@ -305,6 +427,7 @@ const Marineinsurence = () => {
                   {step === 1 && (
                     <>
                       <ProductDetails
+                        type={type}
                         formData={formData}
                         setFormData={setFormData}
                         validationErrors={validationErrors}
@@ -339,6 +462,7 @@ const Marineinsurence = () => {
                   )}
 
                   {/* ================= STEP 2 ================= */}
+                  {/* STEP 2 */}
                   {step === 2 && (
                     <>
                       <VesselVoyageDetail
@@ -353,6 +477,7 @@ const Marineinsurence = () => {
                       />
 
                       <div className="d-flex justify-content-between mt-4">
+
                         <button
                           className="btn btn-secondary rounded-pill px-4"
                           onClick={() => setStep(1)}
@@ -360,48 +485,76 @@ const Marineinsurence = () => {
                           Back
                         </button>
 
-                        <button
-                          className="btn btn-warning rounded-pill px-4"
-                          onClick={() => setStep(3)}
-                        >
-                          View Premium Details
-                        </button>
+                        <div className="d-flex gap-2">
+
+                          {/* SAVE QUOTATION BUTTON */}
+                          <button
+                            className="btn btn-success rounded-pill"
+                            onClick={() => {
+
+                              if (!calculatedRisks.length) {
+                                toast.error("Please calculate premium before saving quotation");
+                                return;
+                              }
+
+                              // Ensure every verified risk is calculated
+                              const notCalculated = verifiedRisks.filter(vr => {
+                                const found = calculatedRisks.find(cr => cr.id === vr.id);
+                                return !found || !found.isCalculated;
+                              });
+
+                              if (notCalculated.length > 0) {
+                                toast.error("Please calculate premium for all risks before saving quotation");
+                                return;
+                              }
+
+                              handleSubmitQuotation();
+
+                            }}
+                          >
+                            Save Quotation
+                          </button>
+
+                          {/* VIEW PREMIUM BUTTON */}
+                          <button
+                            className="btn btn-warning rounded-pill px-4"
+                            onClick={() => {
+
+                              const verified = rateList.filter((r) => r.isVerified);
+
+                              if (verified.length === 0) {
+                                toast.error("Please verify at least one risk before viewing premium");
+                                return;
+                              }
+
+                              setShowPremium(true);
+
+                            }}
+                          >
+                            View Premium Details
+                          </button>
+
+                        </div>
+
                       </div>
                     </>
                   )}
 
-                  {/* ================= STEP 3 ================= */}
-                  {step === 3 && (
-                    <>
-                      <PremiumPopup
-                        risks={verifiedRisks}
-                        formData={formData}
-                        onAddAdditional={(tab) => {
-                          setAdditionalTab(tab);
-                          setShowAdditional(true);
-                        }}
-                      />
-
-                      <div className="d-flex justify-content-between mt-4">
-                        <button
-                          className="btn btn-secondary rounded-pill px-4"
-                          onClick={() => setStep(2)}
-                        >
-                          Back
-                        </button>
-
-                        <button
-                          className="btn btn-success px-4 rounded-pill"
-                          onClick={handleSubmitQuotation}
-                        >
-                          Submit Quotation
-                        </button>
-                      </div>
-                    </>
-                  )}
                   {/* ================= STEP 4 ================= */}
                   {step === 4 && (
                     <QuotationSummary
+                      quotationData={quotationData}
+                      formData={formData}
+                      risks={verifiedRisks}
+                      onIssuePolicy={handleIssuePolicy}
+                    />
+                  )}
+
+                  {/* ================= STEP 5 ================= */}
+                  {step === 5 && (
+                    <PolicySummary
+                      quotationData={quotationData}
+                      policyData={policyData}
                       formData={formData}
                       risks={verifiedRisks}
                     />
@@ -410,18 +563,30 @@ const Marineinsurence = () => {
                 </div>
               </div>
             </div>
-
-            <AdditionalFieldsPopup
-              open={showAdditional}
-              onClose={() => setShowAdditional(false)}
-              activeTab={additionalTab}
+            <PremiumPopup
               formData={formData}
               setFormData={setFormData}
+              show={showPremium}
+              onClose={() => setShowPremium(false)}
+              risks={verifiedRisks}
+              existingRisks={calculatedRisks}
+              onRisksUpdate={handleRisksUpdate}
+              onAddAdditional={(tab) => {
+                setAdditionalTab(tab);
+                setShowAdditional(true);
+              }}
             />
 
           </div>
         </div>
       </div>
+      <AdditionalFieldsPopup
+        open={showAdditional}
+        onClose={() => setShowAdditional(false)}
+        activeTab={additionalTab}
+        formData={formData}
+        setFormData={setFormData}
+      />
     </>
   );
 };

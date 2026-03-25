@@ -30,119 +30,121 @@ const Login = () => {
   };
 
   //Dummy login
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { username, password, mobile, captcha } = form;
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const { username, password, mobile, captcha } = form;
 
-    if (!username || !password || !mobile || !captcha) {
-      toast.error(
-        lang === "ar" ? "يرجى ملء جميع الحقول" : "Please fill all fields",
-      );
-      return;
-    }
+  //   if (!username || !password || !mobile || !captcha) {
+  //     toast.error(
+  //       lang === "ar" ? "يرجى ملء جميع الحقول" : "Please fill all fields",
+  //     );
+  //     return;
+  //   }
 
-    if (!/^05\d{8}$/.test(mobile)) {
-      toast.error(
-        lang === "ar"
-          ? "رقم الجوال غير صالح"
-          : "Invalid mobile number. Must start with 05 and be 10 digits.",
-      );
-      return;
-    }
+  //   if (!/^05\d{8}$/.test(mobile)) {
+  //     toast.error(
+  //       lang === "ar"
+  //         ? "رقم الجوال غير صالح"
+  //         : "Invalid mobile number. Must start with 05 and be 10 digits.",
+  //     );
+  //     return;
+  //   }
 
-    if (captcha !== captchaValue) {
-      toast.error(lang === "ar" ? "رمز التحقق غير صحيح" : "Invalid Captcha");
-      return;
-    }
+  //   if (captcha !== captchaValue) {
+  //     toast.error(lang === "ar" ? "رمز التحقق غير صحيح" : "Invalid Captcha");
+  //     return;
+  //   }
 
-    setIsLoading(true);
+  //   setIsLoading(true);
 
-    // Mock Auth Logic
-    const user = dummyUsers.find(
-      (u) => u.username.toLowerCase() === username.toLowerCase(),
-    );
+  //   // Mock Auth Logic
+  //   const user = dummyUsers.find(
+  //     (u) => u.username.toLowerCase() === username.toLowerCase(),
+  //   );
 
-    if (user) {
-      sessionStorage.setItem("tempUserRole", user.role); // Store temp until OTP verified
-      sessionStorage.setItem("tempMobile", mobile);
-      toast.success(
-        lang === "ar"
-          ? "نجاح تسجيل الدخول"
-          : "Login Success! Redirecting to OTP...",
-      );
-      setTimeout(() => {
-        setIsLoading(false);
-        navigate("/otp");
-      }, 1000);
-    } else {
-      setIsLoading(false);
-      toast.error(
-        lang === "ar"
-          ? "بيانات الاعتماد غير صالحة"
-          : 'Invalid credentials. Use "agent" or "underwriter".',
-      );
-    }
-  };
+  //   if (user) {
+  //     sessionStorage.setItem("tempUserRole", user.role); // Store temp until OTP verified
+  //     sessionStorage.setItem("tempMobile", mobile);
+  //     toast.success(
+  //       lang === "ar"
+  //         ? "نجاح تسجيل الدخول"
+  //         : "Login Success! Redirecting to OTP...",
+  //     );
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //       navigate("/otp");
+  //     }, 1000);
+  //   } else {
+  //     setIsLoading(false);
+  //     toast.error(
+  //       lang === "ar"
+  //         ? "بيانات الاعتماد غير صالحة"
+  //         : 'Invalid credentials. Use "agent" or "underwriter".',
+  //     );
+  //   }
+  // };
 
 //Api wise login
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-//   const { username, password, mobile, captcha } = form;
+  const { username, password, mobile, captcha } = form;
 
-//   if (!username || !password || !mobile || !captcha) {
-//     toast.error("Please fill all fields");
-//     return;
-//   }
+  if (!username || !password || !mobile || !captcha) {
+    toast.error("Please fill all fields");
+    return;
+  }
 
-//   if (!/^05\d{8}$/.test(mobile)) {
-//     toast.error("Invalid mobile number");
-//     return;
-//   }
+  if (!/^05\d{8}$/.test(mobile)) {
+    toast.error("Invalid mobile number");
+    return;
+  }
 
-//   if (captcha !== captchaValue) {
-//     toast.error("Invalid Captcha");
-//     return;
-//   }
+  if (captcha !== captchaValue) {
+    toast.error("Invalid Captcha");
+    return;
+  }
 
-//   setIsLoading(true);
+  setIsLoading(true);
 
-//   try {
-//     const res = await GetLogin({
-//       fUser: username,
-//       fPassword: md5(password.trim()),
-//       customerIp: "string",
-//       ipdetails: "string",
-//       createdby: username,
-//       requestType: "web"
-//     });
+  try {
+    const res = await GetLogin({
+      fUser: username,
+      fPassword: md5(password.trim()),
+      customerIp: "string",
+      ipdetails: "string",
+      createdby: username,
+      requestType: "web"
+    });
 
-//     if (res.data?.message === "Login Success") {
+    if (res.data?.message === "Success") {
 
-//       const userData = res.data.user;
+      const userData = res.data?.data;
+      console.log("agent data ",userData)
 
 
-//       sessionStorage.setItem("tempUserRole", userData.companyCode);
-//       sessionStorage.setItem("tempMobile", userData.mobile);
-//       sessionStorage.setItem("empCode", userData.empCode);
-//       sessionStorage.setItem("agentId", userData.agentid);
-//       sessionStorage.setItem("branchCode", userData.branchCode);
-//       sessionStorage.setItem("userName", userData.userName);
-//       sessionStorage.setItem("levelCode", userData.levelCode);
+      sessionStorage.setItem("tempUserRole", userData.companyCode);
+      sessionStorage.setItem("tempMobile", userData.mobile);
+      sessionStorage.setItem("empCode", userData.empCode);
+      sessionStorage.setItem("agentId", userData.agentid);
+      sessionStorage.setItem("branchCode", userData.branchCode);
+      sessionStorage.setItem("userName", userData.userName);
+      sessionStorage.setItem("levelCode", userData.levelCode);
+      sessionStorage.setItem("email", userData.email);
 
-//       toast.success("Login Success! Redirecting to OTP...");
+      toast.success("Login Success! Redirecting to OTP...");
 
-//       setTimeout(() => {
-//         navigate("/otp");
-//       }, 800);
-//     }
+      setTimeout(() => {
+        navigate("/otp");
+      }, 800);
+    }
 
-//   } catch (error) {
-//     toast.error("Invalid Credentials");
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
+  } catch (error) {
+    toast.error("Invalid Credentials");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 
 

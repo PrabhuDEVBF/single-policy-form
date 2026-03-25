@@ -1,7 +1,7 @@
 {
-    "quotations": 31,
-    "policies": 74,
-    "issuedCertificates": 12,
-    "singlePolicyId": 18,
-    "openCoverId": 42
+    "quotations": null,
+    "policies": null,
+    "issueCertificates": null,
+    "singlePolicyId": null,
+    "openCoverId": null
 }
